@@ -19,8 +19,10 @@ public class GameController : MonoBehaviour
     public float pickupWait;
     public float notpickupWait;
 
+    public Text TimeText;
     public Text EndText;
     private bool GameOver;
+    public float time;
     
     void Start()
     {
@@ -33,15 +35,28 @@ public class GameController : MonoBehaviour
     {
         if (GameOver)
         {
+            Time.timeScale = 0;
             if(Input.GetKeyDown(KeyCode.R))
             {
                 Scene newLevel = SceneManager.GetActiveScene();
                 SceneManager.LoadScene(newLevel.name);
+                Time.timeScale = 1;
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();
             }
+        }
+
+        if (time > 0)
+        {
+            time -= Time.deltaTime;
+            TimeText.text = "Time Remaining: " + Mathf.Ceil(time);
+        }
+        if(time <= 0)
+        {
+            EndText.text = "                     Time up!\nPress 'R' to restart or 'Esc' to exit";
+            EndGame();
         }
     }
 
